@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>答题通 - 税务师必刷题库</title>
+  <link rel="manifest" href="./manifest.json?v=6">
+  <link rel="stylesheet" href="./style.css?v=6">
+  <link rel="apple-touch-icon" href="./icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#e74c3c">
+  <script src="./real_data.js?v=6"></script>
+</head>
+<body>
+
+<!-- ============ 页面1：科目列表 ============ -->
+<div class="page active" id="subject-page">
+  <div class="topbar" style="background:#e74c3c">
+    <h1>答题通</h1>
+    <span class="right-btn" style="font-size:13px">税务师必刷题库</span>
+  </div>
+  <div class="subject-grid" id="subject-grid">
+    <div class="loading">加载科目中</div>
+  </div>
+</div>
+
+<!-- ============ 页面2：模式选择 ============ -->
+<div class="page" id="mode-page">
+  <div class="topbar" id="subject-topbar" style="background:#e74c3c">
+    <button class="back-btn" onclick="goBackFromMode()">‹</button>
+    <h1 id="subject-topbar-name">科目</h1>
+  </div>
+  <div class="mode-list">
+    <div class="mode-card" onclick="onModeClick('browse')">
+      <div class="mode-icon">📖</div>
+      <div class="mode-info">
+        <div class="mode-name">章节练习</div>
+        <div class="mode-desc">按科目→章节 逐题练习</div>
+      </div>
+      <div class="mode-arrow">›</div>
+    </div>
+    <div class="mode-card" onclick="onModeClick('exam')">
+      <div class="mode-icon">⏱️</div>
+      <div class="mode-info">
+        <div class="mode-name">模拟考试</div>
+        <div class="mode-desc">随机抽取100题，限时模拟</div>
+      </div>
+      <div class="mode-arrow">›</div>
+    </div>
+    <div class="mode-card" onclick="onModeClick('wrong')">
+      <div class="mode-icon">⭐</div>
+      <div class="mode-info">
+        <div class="mode-name">错题收藏</div>
+        <div class="mode-desc">查看收藏的试题</div>
+      </div>
+      <div class="mode-arrow">›</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 页面3：章节列表 ============ -->
+<div class="page" id="chapter-page">
+  <div class="topbar" style="background:#e74c3c">
+    <button class="back-btn" onclick="goBackFromChapter()">‹</button>
+    <h1 id="chapter-topbar-name">章节</h1>
+  </div>
+  <div class="chapter-list" id="chapter-list">
+    <div class="loading">加载章节中</div>
+  </div>
+</div>
+
+<!-- ============ 页面4：试题列表 ============ -->
+<div class="page" id="question-list-page">
+  <div class="topbar" style="background:#e74c3c">
+    <button class="back-btn" onclick="goBackFromQuestionList()">‹</button>
+    <h1 id="question-topbar-name">试题</h1>
+    <span class="right-btn" id="question-count"></span>
+  </div>
+  <div class="question-list" id="question-list">
+    <div class="loading">加载试题中</div>
+  </div>
+</div>
+
+<!-- ============ 页面5：试题详情 ============ -->
+<div class="page" id="question-detail-page">
+  <div class="topbar" style="background:#e74c3c">
+    <button class="back-btn" onclick="goBackFromDetail()">‹</button>
+    <h1 id="detail-topbar-name">试题</h1>
+  </div>
+  <div class="question-detail" id="question-detail">
+    <div class="loading">加载中</div>
+  </div>
+</div>
+
+<!-- ============ 页面6：模拟考试 ============ -->
+<div class="page" id="exam-page">
+  <div class="topbar" id="exam-topbar" style="background:#e74c3c">
+    <button class="back-btn" onclick="goHome()">✕</button>
+    <h1 id="exam-topbar-name">模拟考试</h1>
+    <span class="right-btn" id="exam-timer" style="font-variant-numeric:tabular-nums">00:00</span>
+  </div>
+  <div class="exam-header">
+    <span class="exam-progress" id="exam-progress">1 / 100</span>
+    <button class="exam-submit-btn" onclick="submitExam()">提交</button>
+  </div>
+  <div class="exam-question" id="exam-question">
+    <div class="loading">加载试题中</div>
+  </div>
+  <div class="exam-nav">
+    <button class="nav-btn prev" id="exam-prev" onclick="onExamPrev()">上一题</button>
+    <button class="nav-btn next" id="exam-next" onclick="onExamNext()">下一题</button>
+  </div>
+</div>
+
+<!-- ============ 页面7：考试结果 ============ -->
+<div class="page" id="exam-result-page">
+  <div class="topbar" style="background:#e74c3c">
+    <h1>考试结果</h1>
+  </div>
+  <div class="exam-result" id="exam-result">
+    <div class="loading">计算结果中...</div>
+  </div>
+</div>
+
+<!-- ============ 页面7.5：错题回顾 ============ -->
+<div class="page" id="wrong-review-page">
+  <div class="topbar" style="background:#f39c12">
+    <button class="back-btn" onclick="goBackFromWrongReview()">‹</button>
+    <h1 id="wr-topbar-title">错题回顾</h1>
+  </div>
+  <div class="wr-progress" id="wr-progress">1 / 5</div>
+  <div class="question-detail" id="wrong-review-detail">
+    <div class="loading">加载中</div>
+  </div>
+  <div class="wr-nav">
+    <button class="nav-btn prev" id="wr-prev" onclick="wrongReviewPrev()">上一错题</button>
+    <button class="nav-btn next" id="wr-next" onclick="wrongReviewNext()">下一错题</button>
+  </div>
+</div>
+
+<!-- ============ 页面8：错题集 ============ -->
+<div class="page" id="wrong-page">
+  <div class="topbar" style="background:#e74c3c">
+    <button class="back-btn" onclick="goHome()">‹</button>
+    <h1>错题收藏</h1>
+  </div>
+  <div class="wrong-tabs" id="wrong-tabs"></div>
+  <div class="question-list" id="wrong-list">
+    <div class="loading">加载中</div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="./db.js?v=6"></script>
+<script src="./app.js?v=6"></script>
+</body>
+</html>
